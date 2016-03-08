@@ -8,11 +8,13 @@ class Dragon:
         self.state = 'GLIDING';
         self.STATES = ('FLYING_UP','GLIDING','FLYING_DOWN')
         self.x = self.drawable.rect.x
+        self.xSpeed = 0
         self.y = self.drawable.rect.y
         #Find other implementation for these variables
         self.glidingY = 0.5
         self.flyupY = -2
         self.flydownY = 2
+        self.xMAXSPEED = 2
 
     def draw(self, screen):
         screen.blit(self.frame, self.rect)
@@ -26,7 +28,10 @@ class Dragon:
         elif self.state == 'FLYING_DOWN':
             self.y += self.flydownY
 
+        self.x += self.xSpeed
+
         self.drawable.rect.y = self.y
+        self.drawable.rect.x = self.x
         self.drawable.update(screen)
 
     def handleEvents(self, event):
@@ -39,9 +44,19 @@ class Dragon:
                 self.state = 'FLYING_DOWN'
                 self.drawable.nextAnim('fly_down')
                 self.drawable.restartAnim()
+            elif event.key == pygame.K_d:
+                self.xSpeed = self.xMAXSPEED
+            elif event.key == pygame.K_a:
+                self.xSpeed = -self.xMAXSPEED
         if event.type == pygame.KEYUP:
-            self.state = 'GLIDING'
-            self.drawable.nextAnim('glide')
-            self.drawable.restartAnim()
+            if((event.key == pygame.K_w and self.state == 'FLYING_UP') or
+               (event.key == pygame.K_s and self.state == 'FLYING_DOWN')):
+                self.state = 'GLIDING'
+                self.drawable.nextAnim('glide')
+                self.drawable.restartAnim()
+            elif((event.key == pygame.K_d and self.xSpeed > 0) or
+                 (event.key == pygame.K_a and self.xSpeed < 0)):
+                self.xSpeed = 0
+            
 
         
