@@ -5,6 +5,7 @@ class Dragon:
     def __init__(self, drawable, collision_rect):
         self.drawable = drawable
         self.collision_rect = collision_rect
+        self.collision_transform = drawable.rect
         self.state = 'GLIDING';
         self.STATES = ('FLYING_UP','GLIDING','FLYING_DOWN')
         self.x = self.drawable.rect.x
@@ -19,7 +20,7 @@ class Dragon:
     def draw(self, screen):
         screen.blit(self.frame, self.rect)
 
-    def update(self, screen):
+    def update(self, screen, debug=False):
         # Change this with smoother functions
         if self.state == 'GLIDING':
             self.y += self.glidingY
@@ -32,7 +33,13 @@ class Dragon:
 
         self.drawable.rect.y = self.y
         self.drawable.rect.x = self.x
+        self.collision_rect.x = self.drawable.rect.x + (self.drawable.rect.width - self.collision_rect.width)/2
+        self.collision_rect.y = self.drawable.rect.y + (self.drawable.rect.height - self.collision_rect.height)/2
+
         self.drawable.update(screen)
+        if debug:
+            pygame.draw.rect(screen, (0,255,0), self.collision_rect, 2)
+
 
     def handleEvents(self, event):
         if event.type == pygame.KEYDOWN:
