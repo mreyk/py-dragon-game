@@ -28,7 +28,8 @@ objectAnimDrawable = AnimDrawable.AnimDrawable('glide', guy_down.get_rect(), {'g
                                                                                         {'frame': guy_down, 'time': 20}),
                                                                               'fly_down':({'frame': guy_flydown, 'time': 20},
                                                                                           {'frame': guy_flydown, 'time': 20})})
-dragon = Dragon.Dragon(objectAnimDrawable, guy_down.get_rect())
+guy_rect = pygame.Rect(0,0,100,60)
+dragon = Dragon.Dragon(objectAnimDrawable, guy_rect)
 screen = pygame.display.set_mode(screen_size)
 
 while True:
@@ -37,7 +38,7 @@ while True:
         if event.type == pygame.QUIT: sys.exit()
 
     screen.fill((0,0,0))
-    dragon.update(screen)
+    dragon.update(screen, True)
     pygame.display.flip()
     pygame.time.delay(5)
 
