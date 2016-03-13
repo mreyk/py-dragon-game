@@ -2,10 +2,9 @@ import pygame
 import math
 
 class Dragon:
-    def __init__(self, drawable, collision_rect):
+    def __init__(self, drawable, col_rect):
         self.drawable = drawable
-        self.collision_rect = collision_rect
-        self.collision_transform = drawable.rect
+        self.col_rect = col_rect # collision rect
         self.state = 'GLIDING';
         self.STATES = ('FLYING_UP','GLIDING','FLYING_DOWN')
         self.x = self.drawable.rect.x
@@ -31,14 +30,29 @@ class Dragon:
 
         self.x += self.xSpeed
 
-        self.drawable.rect.y = self.y
-        self.drawable.rect.x = self.x
-        self.collision_rect.x = self.drawable.rect.x + (self.drawable.rect.width - self.collision_rect.width)/2
-        self.collision_rect.y = self.drawable.rect.y + (self.drawable.rect.height - self.collision_rect.height)/2
+
+        self.col_rect.x = self.x - self.col_rect.width/2
+        self.col_rect.y = self.y - self.col_rect.height/2
+
+        #Screen boundaries logic (silly: there is a mini-bug, but let's leave it there for now)
+        if self.col_rect.left < 0:
+            self.x = 0 + self.col_rect.width/2
+        elif self.col_rect.right > screen.get_width():
+            self.x = screen.get_width() - self.col_rect.width/2
+        if self.col_rect.top < 0:
+            self.y = self.col_rect.height/2
+        elif self.col_rect.bottom > screen.get_height():
+            self.y = screen.get_height() - self.col_rect.height/2
+        #End screen boundaries logic
+
+        self.drawable.rect.x = self.x - self.drawable.rect.width/2
+        self.drawable.rect.y = self.y - self.drawable.rect.height/2
 
         self.drawable.update(screen)
         if debug:
-            pygame.draw.rect(screen, (0,255,0), self.collision_rect, 2)
+            pygame.draw.rect(screen, (0,255,0), self.col_rect, 2)
+            pygame.draw.circle(screen, (255,0,255), (int(self.x) ,int(self.y)), 2)
+
 
 
     def handleEvents(self, event):
