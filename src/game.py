@@ -1,8 +1,7 @@
 import sys
 import pygame
 import json
-import AnimDrawable
-import Dragon
+import AnimDrawable, Dragon, Enemy
 from pprint import *
 
 print "Starting game..."
@@ -33,6 +32,13 @@ objectAnimDrawable = AnimDrawable.AnimDrawable('glide', flyup_001.get_rect(), {'
                                                                                       {'frame':fire_001, 'time': 200})})
 guy_rect = pygame.Rect(0,0,100,60)
 dragon = Dragon.Dragon(objectAnimDrawable, guy_rect)
+
+enemy_001 = pygame.image.load('images/enemy/enemy_001.png')
+enemyAnimDrawable = AnimDrawable.AnimDrawable('enemy', enemy_001.get_rect(), {'enemy': ({'frame': enemy_001, 'time':100},
+                                                                                        {'frame': enemy_001, 'time':100})})
+enemy_rect = pygame.Rect(width, height/2 ,100,100)
+enemy = Enemy.Enemy(enemyAnimDrawable, enemy_rect)
+
 screen = pygame.display.set_mode(screen_size)
 
 while True:
@@ -42,6 +48,7 @@ while True:
 
     screen.fill((0,0,0))
     dragon.update(screen, True)
+    enemy.update(screen, True)
     pygame.display.flip()
     pygame.time.delay(5)
 
