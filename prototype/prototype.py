@@ -17,14 +17,14 @@ black = 200, 100 , 255
 pygame.init()
 screen = pygame.display.set_mode(size)
 
-guy_down = pygame.image.load('images/dragon1.png')
-guy_up = pygame.image.load('images/dragon2.png')
+guy_down = pygame.image.load('dragon1.png')
+guy_up = pygame.image.load('dragon2.png')
 guyrect = guy_down.get_rect()
-enemyframe = pygame.image.load('images/test.png')
+enemyframe = pygame.image.load('test.png')
 enemyrect = enemyframe.get_rect()
 enemyrect.left = width
 enemyrect.y = random.randint(0+100,height-100)
-backgroundframe = pygame.image.load('images/background.png')
+backgroundframe = pygame.image.load('background.png')
 backrect = backgroundframe.get_rect()
 
 
