@@ -46,6 +46,7 @@ while True:
         dragon.handleEvents(event)
         if event.type == pygame.QUIT: sys.exit()
 
+    dragon.checkColls([enemy])
     screen.fill((0,0,0))
     dragon.update(screen, True)
     enemy.update(screen, True)

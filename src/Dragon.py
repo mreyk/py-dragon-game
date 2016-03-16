@@ -5,7 +5,8 @@ class Dragon:
     def __init__(self, drawable, col_rect):
         self.drawable = drawable
         self.col_rect = col_rect # collision rect
-        self.state = 'GLIDING';
+        self.state = 'GLIDING'
+        self.state2 = 'HAPPY'
         self.STATES = ('FLYING_UP','GLIDING','FLYING_DOWN')
         self.x = self.drawable.rect.x
         self.xSpeed = 0
@@ -15,6 +16,9 @@ class Dragon:
         self.flyupY = -2
         self.flydownY = 2
         self.xMAXSPEED = 2
+        self.lives = 3
+        self.blinking = True
+        self.hitted_counter = 0
 
     def draw(self, screen):
         screen.blit(self.frame, self.rect)
@@ -27,6 +31,12 @@ class Dragon:
             self.y += self.flyupY
         elif self.state == 'FLYING_DOWN':
             self.y += self.flydownY
+
+        if self.state2 == 'HITTED':
+            self.hitted_counter-= 1
+            if self.hitted_counter <= 0:
+                self.state2 = 'HAPPY'
+                self.hitted_counter = 0
 
         self.x += self.xSpeed
 
@@ -48,11 +58,16 @@ class Dragon:
         self.drawable.rect.x = self.x - self.drawable.rect.width/2
         self.drawable.rect.y = self.y - self.drawable.rect.height/2
 
-        self.drawable.update(screen)
-        if debug:
-            pygame.draw.rect(screen, (0,255,0), self.col_rect, 2)
-            pygame.draw.circle(screen, (255,0,255), (int(self.x) ,int(self.y)), 2)
+        if self.hitted_counter % 10 == 0:
+            self.blinking = not self.blinking
+        if self.state2 != 'HITTED' or self.blinking:
+            self.drawable.update(screen)
+            if debug:
+                pygame.draw.rect(screen, (0,255,0), self.col_rect, 2)
+                pygame.draw.circle(screen, (255,0,255), (int(self.x) ,int(self.y)), 2)
 
+        if self.lives <= 0:
+            exit()
 
 
     def handleEvents(self, event):
@@ -79,5 +94,11 @@ class Dragon:
                  (event.key == pygame.K_a and self.xSpeed < 0)):
                 self.xSpeed = 0
             
-
+    def checkColls(self, enemies):
+        for enemy in enemies:
+            if (self.col_rect.colliderect(enemy.col_rect) and
+                self.state2 != 'HITTED'):
+                self.state2 = 'HITTED'
+                self.hitted_counter = 100
+                self.lives -= 1
         
