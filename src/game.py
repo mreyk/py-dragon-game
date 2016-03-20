@@ -41,17 +41,29 @@ enemy = Enemy.Enemy(enemyAnimDrawable, enemy_rect)
 
 screen = pygame.display.set_mode(screen_size)
 
+fps = 10
+pygame.time.set_timer(pygame.USEREVENT + 1, fps)
+update = True
+draw = True
+
 while True:
     for event in pygame.event.get():
-        dragon.handleEvents(event)
         if event.type == pygame.QUIT: sys.exit()
+        dragon.handleEvents(event)
+        if event.type == pygame.USEREVENT + 1:
+            draw = True
+            update = True
 
-    dragon.checkColls([enemy])
-    screen.fill((0,0,0))
-    dragon.update(screen, True)
-    enemy.update(screen, True)
-    pygame.display.flip()
-    pygame.time.delay(5)
-
+    if update:
+        update = False
+        dragon.checkColls([enemy])
+        dragon.update(screen, True)
+        enemy.update(screen, True)
+    if draw:
+        draw = False
+        screen.fill((0,0,0))
+        dragon.draw(screen, True)
+        enemy.draw(screen, True)
+        pygame.display.flip()
 
 print "Finished game."
