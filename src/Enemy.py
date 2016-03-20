@@ -15,8 +15,11 @@ class Enemy:
         #Temporary while I think of something better
         self.counter = 0
 
-    def draw(self, screen):
-        screen.blit(self.frame, self.rect)
+    def draw(self, screen, debug=False):
+        self.drawable.update(screen)
+        if debug:
+            pygame.draw.rect(screen, (0,255,0), self.col_rect, 2)
+            pygame.draw.circle(screen, (255,0,255), (int(self.x) ,int(self.y)), 2)
 
     def update(self, screen, debug=False):
         # Change this with cooler functions
@@ -31,12 +34,6 @@ class Enemy:
 
         self.drawable.rect.x = self.x - self.drawable.rect.width/2
         self.drawable.rect.y = self.y - self.drawable.rect.height/2
-
-        self.drawable.update(screen)
-        if debug:
-            pygame.draw.rect(screen, (0,255,0), self.col_rect, 2)
-            pygame.draw.circle(screen, (255,0,255), (int(self.x) ,int(self.y)), 2)
-
 
 
     def handleEvents(self, event):            

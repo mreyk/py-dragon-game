@@ -20,8 +20,12 @@ class Dragon:
         self.blinking = True
         self.hitted_counter = 0
 
-    def draw(self, screen):
-        screen.blit(self.frame, self.rect)
+    def draw(self, screen, debug=False):
+        if self.state2 != 'HITTED' or self.blinking:
+            self.drawable.update(screen)
+            if debug:
+                pygame.draw.rect(screen, (0,255,0), self.col_rect, 2)
+                pygame.draw.circle(screen, (255,0,255), (int(self.x) ,int(self.y)), 2)
 
     def update(self, screen, debug=False):
         # Change this with smoother functions
@@ -60,11 +64,6 @@ class Dragon:
 
         if self.hitted_counter % 10 == 0:
             self.blinking = not self.blinking
-        if self.state2 != 'HITTED' or self.blinking:
-            self.drawable.update(screen)
-            if debug:
-                pygame.draw.rect(screen, (0,255,0), self.col_rect, 2)
-                pygame.draw.circle(screen, (255,0,255), (int(self.x) ,int(self.y)), 2)
 
         if self.lives <= 0:
             exit()
