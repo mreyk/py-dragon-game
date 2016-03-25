@@ -1,4 +1,4 @@
-import sys, copy, json
+import sys, copy, json, random
 import pygame
 import AnimDrawable, Dragon, Enemy
 from pprint import *
@@ -76,8 +76,12 @@ def main():
     print "Finished game."
 
 def __create_enemy(enemy_frame_rect, enemy_frames):
+    
     enemyAnimDrawable = AnimDrawable.AnimDrawable('enemy', enemy_frame_rect.copy(), enemy_frames.copy())
-    enemy_rect = pygame.Rect(width, height/2 ,100,100)
+    enemyHeight = 100
+    ranges = range(enemyHeight, height + 1 - enemyHeight, height/5)
+    yPos = random.choice(ranges)
+    enemy_rect = pygame.Rect(width, yPos, enemyHeight, enemyHeight)
     enemyPrototype = Enemy.Enemy(enemyAnimDrawable, enemy_rect)
 
     return enemyPrototype
