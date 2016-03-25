@@ -18,7 +18,7 @@ class Enemy:
     def draw(self, screen, debug=False):
         self.drawable.update(screen)
         if debug:
-            pygame.draw.rect(screen, (0,255,0), self.col_rect, 2)
+            pygame.draw.rect(screen, (0,255,0), self.drawable.rect, 2)
             pygame.draw.circle(screen, (255,0,255), (int(self.x) ,int(self.y)), 2)
 
     def update(self, screen, debug=False):

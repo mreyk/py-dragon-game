@@ -24,7 +24,7 @@ class Dragon:
         if self.state2 != 'HITTED' or self.blinking:
             self.drawable.update(screen)
             if debug:
-                pygame.draw.rect(screen, (0,255,0), self.col_rect, 2)
+                pygame.draw.rect(screen, (0,255,0), self.drawable.rect, 2)
                 pygame.draw.circle(screen, (255,0,255), (int(self.x) ,int(self.y)), 2)
 
     def update(self, screen, debug=False):
@@ -95,9 +95,7 @@ class Dragon:
             
     def checkColl(self, enemy):
         if (self.state2 != 'HITTED' and
-            self.col_rect.colliderect(enemy.col_rect) and
             self.drawable.checkMaskColl(enemy.drawable)):
             self.state2 = 'HITTED'
             self.hitted_counter = 100
             self.lives -= 1
-        

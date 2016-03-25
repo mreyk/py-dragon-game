@@ -1,3 +1,5 @@
+import pygame
+
 class Drawable:
     def __init__(self, rect, frame):
         self.rect = rect
@@ -41,4 +43,12 @@ class AnimDrawable(Drawable):
         screen.blit(frame, self.rect)
 
     def checkMaskColl(self, other):
-        return True
+        if not self.rect.colliderect(other.rect):
+            return False
+        frame = self.frames[self.cur_anim][self.cur_frame]['frame']
+        other_frame = other.frames[other.cur_anim][other.cur_frame]['frame']
+        mask = pygame.mask.from_surface(frame, 170)
+        other_mask = pygame.mask.from_surface(other_frame, 170)
+        offset = (other.rect.x - self.rect.x, other.rect.y - self.rect.y)
+
+        return True if mask.overlap(other_mask, offset) else False
