@@ -7,7 +7,6 @@ def main():
     print "Starting game..."
 
     #Loads the configuration
-
     with open('config/config.json') as config_file:
         config = json.load(config_file)
 
@@ -62,6 +61,8 @@ def main():
             update = False
             dragon.update(screen, True)
             for enemy in enemyList:
+                if enemy.state == 'DEAD':
+                    enemyList.remove(enemy)
                 enemy.update(screen, True)
                 dragon.checkColl(enemy)
         if draw:

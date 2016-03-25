@@ -6,7 +6,7 @@ class Enemy:
         self.drawable = drawable
         self.col_rect = col_rect # collision rect
         self.state = 'ENEMY';
-        self.STATES = ('ENEMY')
+        self.STATES = ('ENEMY', 'DEAD')
         self.x = self.col_rect.x
         self.xSpeed = -1
         self.y = self.col_rect.y
@@ -34,6 +34,9 @@ class Enemy:
 
         self.drawable.rect.x = self.x - self.drawable.rect.width/2
         self.drawable.rect.y = self.y - self.drawable.rect.height/2
+
+        if self.drawable.rect.right < 0:
+            self.state = 'DEAD'
 
 
     def handleEvents(self, event):            
