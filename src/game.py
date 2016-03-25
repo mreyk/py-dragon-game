@@ -14,7 +14,7 @@ def main():
     global width, height
     screen_size =  width, height = config['screen']['width'], config['screen']['height']
     fps = config['fps']
-
+    Debug = True
     pygame.init()
 
     # Come up with a more automated system for loading images and animations (images/dragon/fly_up001.png ... )
@@ -59,18 +59,18 @@ def main():
 
         if update:
             update = False
-            dragon.update(screen, True)
+            dragon.update(screen, Debug)
             for enemy in enemyList:
                 if enemy.state == 'DEAD':
                     enemyList.remove(enemy)
-                enemy.update(screen, True)
+                enemy.update(screen, Debug)
                 dragon.checkColl(enemy)
         if draw:
             draw = False
             screen.fill((0,0,0))
-            dragon.draw(screen, True)
+            dragon.draw(screen, Debug)
             for enemy in enemyList:
-                enemy.draw(screen, True)
+                enemy.draw(screen, Debug)
             pygame.display.flip()
 
     print "Finished game."
