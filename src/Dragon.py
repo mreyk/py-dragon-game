@@ -95,7 +95,8 @@ class Dragon:
             
     def checkColl(self, enemy):
         if (self.state2 != 'HITTED' and
-            self.col_rect.colliderect(enemy.col_rect)):
+            self.col_rect.colliderect(enemy.col_rect) and
+            self.drawable.checkMaskColl(enemy.drawable)):
             self.state2 = 'HITTED'
             self.hitted_counter = 100
             self.lives -= 1

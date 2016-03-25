@@ -39,3 +39,6 @@ class AnimDrawable(Drawable):
             frame = self.frames[self.cur_anim][self.cur_frame]['frame']
 
         screen.blit(frame, self.rect)
+
+    def checkMaskColl(self, other):
+        return True
