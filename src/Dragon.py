@@ -93,11 +93,10 @@ class Dragon:
                  (event.key == pygame.K_a and self.xSpeed < 0)):
                 self.xSpeed = 0
             
-    def checkColls(self, enemies):
-        for enemy in enemies:
-            if (self.col_rect.colliderect(enemy.col_rect) and
-                self.state2 != 'HITTED'):
-                self.state2 = 'HITTED'
-                self.hitted_counter = 100
-                self.lives -= 1
+    def checkColl(self, enemy):
+        if (self.state2 != 'HITTED' and
+            self.col_rect.colliderect(enemy.col_rect)):
+            self.state2 = 'HITTED'
+            self.hitted_counter = 100
+            self.lives -= 1
         
