@@ -1,14 +1,6 @@
 import pygame
 
-class Drawable:
-    def __init__(self, rect, frame):
-        self.rect = rect
-        self.frame = frame
-
-    def draw(self, screen):
-        screen.blit(self.frame, self.rect)
-
-class AnimDrawable(Drawable):
+class AnimDrawable():
     
     def __init__(self, start_anim, rect, frames):
         print "Init anim..."
@@ -45,6 +37,7 @@ class AnimDrawable(Drawable):
     def checkMaskColl(self, other):
         if not self.rect.colliderect(other.rect):
             return False
+
         frame = self.frames[self.cur_anim][self.cur_frame]['frame']
         other_frame = other.frames[other.cur_anim][other.cur_frame]['frame']
         mask = pygame.mask.from_surface(frame, 170)

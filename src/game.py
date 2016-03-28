@@ -14,7 +14,7 @@ def main():
     global width, height
     screen_size =  width, height = config['screen']['width'], config['screen']['height']
     fps = config['fps']
-    Debug = True
+    Debug = False
     pygame.init()
 
     # Come up with a more automated system for loading images and animations (images/dragon/fly_up001.png ... )
@@ -22,7 +22,7 @@ def main():
     flyup_002 = pygame.image.load('images/dragon/flyup_002.png')
     flydown_001 = pygame.image.load('images/dragon/flydown_001.png')
     fire_001 = pygame.image.load('images/dragon/fire_001.png')
-    objectAnimDrawable = AnimDrawable.AnimDrawable('glide', flyup_001.get_rect(), {'glide': ({'frame': flyup_001, 'time':10},
+    dragonAnimDrawable = AnimDrawable.AnimDrawable('glide', flyup_001.get_rect(), {'glide': ({'frame': flyup_001, 'time':10},
                                                                                              {'frame': flyup_001, 'time':10}),
                                                                                    'fly_up':({'frame': flyup_002, 'time': 20},
                                                                                              {'frame': flyup_001, 'time': 20}),
@@ -31,7 +31,7 @@ def main():
                                                                                    'fire':({'frame': fire_001, 'time': 200},
                                                                                            {'frame':fire_001, 'time': 200})})
     guy_rect = pygame.Rect(0,0,100,60)
-    dragon = Dragon.Dragon(objectAnimDrawable, guy_rect)
+    dragon = Dragon.Dragon(dragonAnimDrawable, guy_rect)
 
     enemy_001 = pygame.image.load('images/enemy/enemy_001.png')
     enemy_frame_rect = enemy_001.get_rect()
