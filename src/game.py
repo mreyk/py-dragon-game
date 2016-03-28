@@ -1,6 +1,6 @@
 import sys, copy, json, random
 import pygame
-import AnimDrawable, Dragon, Enemy, Background
+import AnimDrawable, Dragon, Enemy, Background, LifeDisplay
 from pprint import *
 
 def main():
@@ -25,6 +25,8 @@ def main():
     backImage = pygame.image.load('images/background2.png').convert_alpha()
     backXSpeed = -5
     closerBackground = Background.Background(screen, backImage, backXSpeed)
+    lifeImage = pygame.image.load('images/life.png').convert_alpha()
+    guiLives = LifeDisplay.LifeDisplay(lifeImage)
 
     # Come up with a more automated system for loading images and animations
     flyup_001 = pygame.image.load('images/dragon/flyup_001.png').convert_alpha()
@@ -76,6 +78,8 @@ def main():
                     enemyList.remove(enemy)
                 enemy.update(screen, Debug)
                 dragon.checkColl(enemy)
+            guiLives.update(dragon)
+
         if draw:
             draw = False
             gameBackground.draw(screen, Debug)
@@ -83,6 +87,7 @@ def main():
             dragon.draw(screen, Debug)
             for enemy in enemyList:
                 enemy.draw(screen, Debug)
+            guiLives.draw(screen)
             pygame.display.flip()
 
     print "Finished game."
