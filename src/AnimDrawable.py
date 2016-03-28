@@ -3,7 +3,6 @@ import pygame
 class AnimDrawable():
     
     def __init__(self, start_anim, rect, frames):
-        print "Init anim..."
         self.frames = frames
         self.rect = rect
         self.cur_frame = 0

@@ -2,9 +2,8 @@ import pygame
 import math
 
 class Dragon:
-    def __init__(self, drawable, col_rect):
+    def __init__(self, drawable):
         self.drawable = drawable
-        self.col_rect = col_rect # collision rect
         self.state = 'GLIDING'
         self.state2 = 'HAPPY'
         self.STATES = ('FLYING_UP','GLIDING','FLYING_DOWN')
@@ -44,19 +43,15 @@ class Dragon:
 
         self.x += self.xSpeed
 
-
-        self.col_rect.x = self.x - self.col_rect.width/2
-        self.col_rect.y = self.y - self.col_rect.height/2
-
         #Screen boundaries logic (silly: there is a mini-bug, but let's leave it there for now)
-        if self.col_rect.left < 0:
-            self.x = 0 + self.col_rect.width/2
-        elif self.col_rect.right > screen.get_width():
-            self.x = screen.get_width() - self.col_rect.width/2
-        if self.col_rect.top < 0:
-            self.y = self.col_rect.height/2
-        elif self.col_rect.bottom > screen.get_height():
-            self.y = screen.get_height() - self.col_rect.height/2
+        if self.drawable.rect.left < 0:
+            self.x = 0 + self.drawable.rect.width/2
+        elif self.drawable.rect.right > screen.get_width():
+            self.x = screen.get_width() - self.drawable.rect.width/2
+        if self.drawable.rect.top < 0:
+            self.y = self.drawable.rect.height/2
+        elif self.drawable.rect.bottom > screen.get_height():
+            self.y = screen.get_height() - self.drawable.rect.height/2
         #End screen boundaries logic
 
         self.drawable.rect.x = self.x - self.drawable.rect.width/2
@@ -64,10 +59,6 @@ class Dragon:
 
         if self.hitted_counter % 10 == 0:
             self.blinking = not self.blinking
-
-        if self.lives <= 0:
-            exit()
-
 
     def handleEvents(self, event):
         if event.type == pygame.KEYDOWN:
