@@ -1,5 +1,5 @@
 import pygame
-import math
+import math, random
 
 class Enemy:
     def __init__(self, drawable, col_rect):
@@ -14,6 +14,7 @@ class Enemy:
         self.ySpeed = 0
         #Temporary while I think of something better
         self.counter = 0
+        self.xpTime = random.random()*20 + 20
 
     def draw(self, screen, debug=False):
         self.drawable.update(screen)
@@ -24,10 +25,13 @@ class Enemy:
     def update(self, screen, debug=False):
         # Change this with cooler functions
         self.counter+= 0.1
-        self.ySpeed = 4*math.sin(self.counter)
+        if self.counter < self.xpTime:
+            self.ySpeed = 4*math.sin(self.counter)
+        else:
+            self.xSpeed -= 0.1
+
         self.y += self.ySpeed
         self.x += self.xSpeed
-
 
         self.col_rect.x = self.x - self.col_rect.width/2
         self.col_rect.y = self.y - self.col_rect.height/2

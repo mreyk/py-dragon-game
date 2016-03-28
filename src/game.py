@@ -18,6 +18,7 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode(screen_size)
 
+    #Move 'background logic' to a class of its own
     backImage = pygame.image.load('images/background.jpg').convert()
     backXSpeed = -1
     gameBackground = Background.Background(screen, backImage, backXSpeed)
@@ -25,7 +26,7 @@ def main():
     backXSpeed = -5
     closerBackground = Background.Background(screen, backImage, backXSpeed)
 
-    # Come up with a more automated system for loading images and animations (images/dragon/fly_up001.png ... )
+    # Come up with a more automated system for loading images and animations
     flyup_001 = pygame.image.load('images/dragon/flyup_001.png').convert_alpha()
     flyup_002 = pygame.image.load('images/dragon/flyup_002.png').convert_alpha()
     flydown_001 = pygame.image.load('images/dragon/flydown_001.png').convert_alpha()
@@ -94,6 +95,7 @@ def __create_enemy(enemy_frame_rect, enemy_frames):
     yPos = random.choice(ranges)
     enemy_rect = pygame.Rect(width, yPos, enemyHeight, enemyHeight)
     enemyPrototype = Enemy.Enemy(enemyAnimDrawable, enemy_rect)
+    pygame.time.set_timer(pygame.USEREVENT + 2, int(2000*random.random() + 1000)) # Event to create enemies every 2 seconds or so
 
     return enemyPrototype
 
