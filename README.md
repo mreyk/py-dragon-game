@@ -1,4 +1,4 @@
-### Змей Змеевич Змеев
+### Дракон
 
 Simple game about a russian(?) dragon and my never-ending **Quest** to make an actual game one day.
 
