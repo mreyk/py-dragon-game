@@ -76,6 +76,8 @@ def main():
             for enemy in enemyList:
                 if enemy.state == 'DEAD':
                     enemyList.remove(enemy)
+                elif enemy.state == 'AIMING':
+                    enemy.shoot(dragon.x, dragon.y)
                 enemy.update(screen, Debug)
                 dragon.checkColl(enemy)
             guiLives.update(dragon)

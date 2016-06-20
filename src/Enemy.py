@@ -6,7 +6,7 @@ class Enemy:
         self.drawable = drawable
         self.col_rect = col_rect # collision rect
         self.state = 'ENEMY';
-        self.STATES = ('ENEMY', 'DEAD')
+        self.STATES = ('ENEMY', 'DEAD', 'AIMING', 'ATTACK')
         self.x = self.col_rect.x
         self.xSpeed = -1
         self.y = self.col_rect.y
@@ -14,7 +14,7 @@ class Enemy:
         self.ySpeed = 0
         #Temporary while I think of something better
         self.counter = 0
-        self.xpTime = random.random()*20 + 20
+        self.xpTime = random.random()*30 + 10
 
     def draw(self, screen, debug=False):
         self.drawable.update(screen)
@@ -27,8 +27,8 @@ class Enemy:
         self.counter+= 0.1
         if self.counter < self.xpTime:
             self.ySpeed = 4*math.sin(self.counter)
-        else:
-            self.xSpeed -= 0.1
+        elif self.state == 'ENEMY':
+            self.state = 'AIMING'
 
         self.y += self.ySpeed
         self.x += self.xSpeed
@@ -46,3 +46,12 @@ class Enemy:
     def handleEvents(self, event):            
         #Do nothing
         print ''
+
+    def shoot(self, x, y):
+        self.state = 'ATTACK'
+        xSpeed = self.x - x
+        ySpeed = self.y - y
+        mod = math.sqrt(xSpeed * xSpeed + ySpeed * ySpeed)
+        speedMod = 6
+        self.xSpeed = -6*xSpeed/mod
+        self.ySpeed = -6*ySpeed/mod

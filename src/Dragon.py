@@ -12,9 +12,9 @@ class Dragon:
         self.y = self.drawable.rect.y
         #Find other implementation for these variables
         self.glidingY = 0.5
-        self.flyupY = -2
-        self.flydownY = 2
-        self.xMAXSPEED = 2
+        self.flyupY = -4
+        self.flydownY = 4
+        self.xMAXSPEED = 4
         self.lives = 3
         self.blinking = True
         self.hitted_counter = 0
