@@ -4,7 +4,8 @@ class LifeDisplay:
     def __init__(self, image):
         self.image = image
         self.rect = image.get_rect()
-        
+        self.lives = []
+
     def update(self, dragon):
         self.lives = dragon.lives
 
