@@ -20,8 +20,9 @@ def main():
 
     scene = SceneGame.SceneGame(screen, Debug)
     scene.initialize()
-    while True:
-        scene.run()
+    not_done = True
+    while not_done:
+        not_done = scene.run()
 
 if __name__ == "__main__":
     main()

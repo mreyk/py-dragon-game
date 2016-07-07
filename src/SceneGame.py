@@ -68,7 +68,7 @@ class SceneGame:
 
             self.dragon.update(self.screen, self.Debug)
             if self.dragon.lives <= 0:
-                exit()
+                return False
             for enemy in self.enemyList:
                 if enemy.state == 'DEAD':
                     self.enemyList.remove(enemy)
@@ -87,8 +87,8 @@ class SceneGame:
                 enemy.draw(self.screen, self.Debug)
             self.guiLives.draw(self.screen)
             pygame.display.flip()
-
-        print "Finished game."
+            
+        return True
 
 def create_enemy(enemy_frame_rect, enemy_frames, dims):
     width = dims[0]
