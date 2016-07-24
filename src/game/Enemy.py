@@ -1,7 +1,11 @@
+import math
+import random
+
 import pygame
-import math, random
+
 
 class Enemy:
+    
     def __init__(self, drawable, col_rect):
         self.drawable = drawable
         self.col_rect = col_rect # collision rect

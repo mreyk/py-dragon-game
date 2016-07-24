@@ -1,5 +1,4 @@
 import pygame
-import math
 
 class Dragon:
     def __init__(self, drawable):

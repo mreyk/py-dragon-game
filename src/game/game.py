@@ -1,7 +1,8 @@
-import sys, copy, json, random
+import json
+
 import pygame
+
 import SceneGame
-from pprint import *
 
 def main():
     print "Starting game..."

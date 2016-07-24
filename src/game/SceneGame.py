@@ -1,6 +1,14 @@
-import sys, copy, json, random
+import sys
+import random
+
 import pygame
-import AnimDrawable, Dragon, Enemy, Background, LifeDisplay
+
+import AnimDrawable
+import Dragon
+import Enemy
+import EnemySkipper
+import Background
+import LifeDisplay
 
 class SceneGame:
     def __init__(self, screen, Debug):
@@ -26,20 +34,25 @@ class SceneGame:
         flyup_002 = pygame.image.load('images/dragon/flyup_002.png').convert_alpha()
         flydown_001 = pygame.image.load('images/dragon/flydown_001.png').convert_alpha()
         fire_001 = pygame.image.load('images/dragon/fire_001.png').convert_alpha()
-        dragonAnimDrawable = AnimDrawable.AnimDrawable('glide', flyup_001.get_rect(), {'glide': ({'frame': flyup_001, 'time':10},
-                                                                                                 {'frame': flyup_001, 'time':10}),
-                                                                                       'fly_up':({'frame': flyup_002, 'time': 20},
-                                                                                                 {'frame': flyup_001, 'time': 20}),
-                                                                                       'fly_down':({'frame': flydown_001, 'time': 20},
-                                                                                                   {'frame': flydown_001, 'time': 20}),
-                                                                                       'fire':({'frame': fire_001, 'time': 200},
-                                                                                               {'frame':fire_001, 'time': 200})})
+        dragonAnimDrawable = AnimDrawable.AnimDrawable(
+            'glide', flyup_001.get_rect(),
+            {'glide': ({'frame': flyup_001, 'time':10},
+                       {'frame': flyup_001, 'time':10}),
+             'fly_up':({'frame': flyup_002, 'time': 20},
+                       {'frame': flyup_001, 'time': 20}),
+             'fly_down':({'frame': flydown_001, 'time': 20},
+                         {'frame': flydown_001, 'time': 20}),
+             'fire':({'frame': fire_001, 'time': 200},
+                     {'frame':fire_001, 'time': 200})})
+        
         self.dragon = Dragon.Dragon(dragonAnimDrawable)
 
         enemy_001 = pygame.image.load('images/enemy/enemy_001.png').convert_alpha()
         self.enemy_frame_rect = enemy_001.get_rect()
-        self.enemy_frames = {'enemy': ({'frame': enemy_001, 'time':100},
-                                  {'frame': enemy_001, 'time':100})}
+        self.enemy_frames = {
+            'enemy': ({'frame': enemy_001, 'time':100},
+                      {'frame': enemy_001, 'time':100})
+        }
 
 
         fps = 2
@@ -93,12 +106,20 @@ class SceneGame:
 def create_enemy(enemy_frame_rect, enemy_frames, dims):
     width = dims[0]
     height = dims[1]
-    enemyAnimDrawable = AnimDrawable.AnimDrawable('enemy', enemy_frame_rect.copy(), enemy_frames.copy())
-    enemyHeight = 100
-    ranges = range(enemyHeight, height + 1 - enemyHeight, height/5)
-    yPos = random.choice(ranges)
-    enemy_rect = pygame.Rect(width, yPos, enemyHeight, enemyHeight)
-    enemyPrototype = Enemy.Enemy(enemyAnimDrawable, enemy_rect)
+    if random.choice(('a','b')) == 'a':
+        enemyHeight = 100
+        ranges = range(enemyHeight, height + 1 - enemyHeight, height/5)
+        yPos = random.choice(ranges)
+        enemy_rect = pygame.Rect(width, yPos, enemyHeight, enemyHeight)
+        enemyAnimDrawable = AnimDrawable.AnimDrawable('enemy', enemy_frame_rect.copy(), enemy_frames.copy())
+        enemyPrototype = Enemy.Enemy(enemyAnimDrawable, enemy_rect)
+    else:
+        enemyHeight = 100
+        yPos = -100
+        enemy_rect = pygame.Rect(width, yPos, enemyHeight, enemyHeight)
+        enemyAnimDrawable = AnimDrawable.AnimDrawable('enemy', enemy_frame_rect.copy(), enemy_frames.copy())
+        enemyPrototype = EnemySkipper.EnemySkipper(enemyAnimDrawable, enemy_rect)
+        
     pygame.time.set_timer(pygame.USEREVENT + 2, int(2000*random.random() + 1000)) # Event to create enemies every 2 seconds or so
 
     return enemyPrototype
