@@ -9,6 +9,7 @@ import Enemy
 import EnemySkipper
 import Background
 import LifeDisplay
+import ScoreDisplay
 
 class SceneGame:
     def __init__(self, screen, Debug):
@@ -32,6 +33,7 @@ class SceneGame:
         self.backgrounds = (gameBackground, closerBackground)
         lifeImage = pygame.image.load('images/life.png').convert_alpha()
         self.guiLives = LifeDisplay.LifeDisplay(lifeImage)
+        self.guiScore = ScoreDisplay.ScoreDisplay(False, self.width-300, 10)
 
         # Come up with a more automated system for loading images and animations
         flyup_001 = pygame.image.load('images/dragon/flyup_001.png').convert_alpha()
@@ -89,6 +91,7 @@ class SceneGame:
                 return newScene
             for enemy in self.enemyList:
                 if enemy.dead:
+                    self.guiScore.addScore(100)
                     self.enemyList.remove(enemy)
                 enemy.update(self.screen, self.Debug)
                 self.dragon.checkColl(enemy)
@@ -102,6 +105,7 @@ class SceneGame:
             for enemy in self.enemyList:
                 enemy.draw(self.screen, self.Debug)
             self.guiLives.draw(self.screen)
+            self.guiScore.draw(self.screen)
             pygame.display.flip()
 
         return self
