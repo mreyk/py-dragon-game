@@ -2,48 +2,47 @@
 import pygame
 
 import Enemy
+import EnemyState
 
 class EnemySkipper(Enemy.Enemy):
 
-    def __init__(self, drawable, col_rect):
-        Enemy.Enemy.__init__(self, drawable, col_rect)
-        self.state = 'AIMING'
-        self.STATES = ('ENEMY', 'DEAD', 'HANGING', 'ATTACK')
-        self.xSpeed = -2
+    class StateHang(EnemyState.EnemyState):
+        def __init__(self, owner, game):
+            EnemyState.EnemyState.__init__(self, owner, game)
+            self.owner.xSpeed = 0
+            self.owner.ySpeed = 2
+            dragon = game.getDragon()
+            self.owner.x = dragon.x
+
+        def getName(self):
+            return 'Attack'
+
+        def updateState(self):
+            if self.owner.y > 50:
+                self.owner.state = EnemySkipper.StateAttack(self.owner, self.game)
+
+    class StateAttack(EnemyState.EnemyState):
+        def __init__(self, owner, game):
+            EnemyState.EnemyState.__init__(self, owner, game)
+            self.owner.xSpeed = 0
+            self.owner.ySpeed = -4
+
+        def getName(self):
+            return 'Attack'
+
+        def act(self):
+            self.owner.ySpeed += 0.2
+
+    def __init__(self, game, drawable, col_rect):
+        Enemy.Enemy.__init__(self, game, drawable, col_rect)
+        self.state = EnemySkipper.StateHang(self, game)
+        self.dead = False
     
     def update(self, screen, Debug=False):
-        self.counter += 0.1
-        
-        if self.counter > self.xpTime and self.state == 'AIMING':
-            self.state = 'HANGING'
-            self.xSpeed = 0
-            self.ySpeed = 2
-            
-        if self.y > 50 and self.state == 'HANGING':
-            self.ySpeed = -4
-            self.xSpeed = 0
-            self.state = 'ATTACK'
+        self.state.updateState()
+        self.state.act()
 
-        if self.state == 'ATTACK':
-            self.ySpeed += 0.2
-
-        self.y += self.ySpeed
-        self.x += self.xSpeed
-
-        self.col_rect.x = self.x - self.col_rect.width/2
-        self.col_rect.y = self.y - self.col_rect.height/2
-
-        self.drawable.rect.x = self.x - self.drawable.rect.width/2
-        self.drawable.rect.y = self.y - self.drawable.rect.height/2
+        self.move()
 
         if (self.drawable.rect.right < 0 or self.drawable.rect.bottom > screen.get_height()):
-            self.state = 'DEAD'
-
-    def shoot(self, x, y):
-        self.x = x
-
-        self.col_rect.x = self.x - self.col_rect.width/2
-        self.col_rect.y = self.y - self.col_rect.height/2
-
-        self.drawable.rect.x = self.x - self.drawable.rect.width/2
-        self.drawable.rect.y = self.y - self.drawable.rect.height/2
+            self.dead = True

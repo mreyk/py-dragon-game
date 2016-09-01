@@ -16,6 +16,10 @@ class SceneGame:
         self.width = screen.get_width()
         self.height = screen.get_height()
         self.Debug = Debug
+        self.initialize()
+
+    def getDragon(self):
+        return self.dragon
 
     def initialize(self):
         #Move 'background logic' to a class of its own
@@ -44,7 +48,7 @@ class SceneGame:
                          {'frame': flydown_001, 'time': 20}),
              'fire':({'frame': fire_001, 'time': 200},
                      {'frame':fire_001, 'time': 200})})
-        
+
         self.dragon = Dragon.Dragon(dragonAnimDrawable)
 
         enemy_001 = pygame.image.load('images/enemy/enemy_001.png').convert_alpha()
@@ -72,7 +76,7 @@ class SceneGame:
                 self.draw = True
                 self.update = True
             if event.type == pygame.USEREVENT + 2:
-                self.enemyList.append(create_enemy(self.enemy_frame_rect, self.enemy_frames, (self.width, self.height)))
+                self.enemyList.append(create_enemy(self, self.enemy_frame_rect, self.enemy_frames, (self.width, self.height)))
 
         if self.update:
             self.update = False
@@ -81,12 +85,11 @@ class SceneGame:
 
             self.dragon.update(self.screen, self.Debug)
             if self.dragon.lives <= 0:
-                return False
+                newScene = SceneGame(self.screen, self.Debug)
+                return newScene
             for enemy in self.enemyList:
-                if enemy.state == 'DEAD':
+                if enemy.dead:
                     self.enemyList.remove(enemy)
-                elif enemy.state == 'AIMING':
-                    enemy.shoot(self.dragon.x, self.dragon.y)
                 enemy.update(self.screen, self.Debug)
                 self.dragon.checkColl(enemy)
             self.guiLives.update(self.dragon)
@@ -100,10 +103,10 @@ class SceneGame:
                 enemy.draw(self.screen, self.Debug)
             self.guiLives.draw(self.screen)
             pygame.display.flip()
-            
-        return True
 
-def create_enemy(enemy_frame_rect, enemy_frames, dims):
+        return self
+
+def create_enemy(game, enemy_frame_rect, enemy_frames, dims):
     width = dims[0]
     height = dims[1]
     if random.choice(('a','b')) == 'a':
@@ -112,14 +115,14 @@ def create_enemy(enemy_frame_rect, enemy_frames, dims):
         yPos = random.choice(ranges)
         enemy_rect = pygame.Rect(width, yPos, enemyHeight, enemyHeight)
         enemyAnimDrawable = AnimDrawable.AnimDrawable('enemy', enemy_frame_rect.copy(), enemy_frames.copy())
-        enemyPrototype = Enemy.Enemy(enemyAnimDrawable, enemy_rect)
+        enemyPrototype = Enemy.Enemy(game, enemyAnimDrawable, enemy_rect)
     else:
         enemyHeight = 100
         yPos = -100
         enemy_rect = pygame.Rect(width, yPos, enemyHeight, enemyHeight)
         enemyAnimDrawable = AnimDrawable.AnimDrawable('enemy', enemy_frame_rect.copy(), enemy_frames.copy())
-        enemyPrototype = EnemySkipper.EnemySkipper(enemyAnimDrawable, enemy_rect)
-        
+        enemyPrototype = EnemySkipper.EnemySkipper(game, enemyAnimDrawable, enemy_rect)
+
     pygame.time.set_timer(pygame.USEREVENT + 2, int(2000*random.random() + 1000)) # Event to create enemies every 2 seconds or so
 
     return enemyPrototype

@@ -3,18 +3,52 @@ import random
 
 import pygame
 
+import EnemyState
 
 class Enemy:
-    
-    def __init__(self, drawable, col_rect):
+
+    class StateIdle(EnemyState.EnemyState):
+        def __init__(self, owner, game):
+            EnemyState.EnemyState.__init__(self, owner, game)
+            self.counter = 0
+            self.nextStateTimer = random.random()*30 + 10
+
+        def getName(self):
+            return 'Idle'
+
+        def act(self):
+            self.counter+= 0.1
+            self.owner.ySpeed = 4*math.sin(self.counter)
+
+        def updateState(self):
+            if self.counter >= self.nextStateTimer:
+                self.owner.state = Enemy.StateAttack(self.owner, self.game)
+
+    class StateAttack(EnemyState.EnemyState):
+        def __init__(self, owner, game):
+            EnemyState.EnemyState.__init__(self, owner, game)
+            dragon = game.getDragon()
+            x = dragon.x
+            y = dragon.y
+            xSpeed = self.owner.x - x
+            ySpeed = self.owner.y - y
+            mod = math.sqrt(xSpeed * xSpeed + ySpeed * ySpeed)
+            speedMod = 6
+            self.owner.xSpeed = -6*xSpeed/mod
+            self.owner.ySpeed = -6*ySpeed/mod
+
+        def getName(self):
+            return 'Attack'
+
+
+    def __init__(self, game, drawable, col_rect):
+        self.state = Enemy.StateIdle(self, game)
+        self.dead = False
         self.drawable = drawable
         self.col_rect = col_rect # collision rect
-        self.state = 'ENEMY';
-        self.STATES = ('ENEMY', 'DEAD', 'AIMING', 'ATTACK')
         self.x = self.col_rect.x
         self.xSpeed = -1
         self.y = self.col_rect.y
-        #Find other implementation for these variables
         self.ySpeed = 0
         #Temporary while I think of something better
         self.counter = 0
@@ -27,13 +61,24 @@ class Enemy:
             pygame.draw.circle(screen, (255,0,255), (int(self.x) ,int(self.y)), 2)
 
     def update(self, screen, debug=False):
-        # Change this with cooler functions
-        self.counter+= 0.1
-        if self.counter < self.xpTime:
-            self.ySpeed = 4*math.sin(self.counter)
-        elif self.state == 'ENEMY':
-            self.state = 'AIMING'
 
+        self.updateState()
+        self.act()
+        self.move()
+
+        if self.drawable.rect.right < 0:
+            self.dead = True
+
+    def onDragonCollission(self):
+        self.state.onDragonCollission()
+
+    def updateState(self):
+        self.state.updateState()
+
+    def act(self):
+        self.state.act()
+
+    def move(self):
         self.y += self.ySpeed
         self.x += self.xSpeed
 
@@ -42,20 +87,3 @@ class Enemy:
 
         self.drawable.rect.x = self.x - self.drawable.rect.width/2
         self.drawable.rect.y = self.y - self.drawable.rect.height/2
-
-        if self.drawable.rect.right < 0:
-            self.state = 'DEAD'
-
-
-    def handleEvents(self, event):            
-        #Do nothing
-        print ''
-
-    def shoot(self, x, y):
-        self.state = 'ATTACK'
-        xSpeed = self.x - x
-        ySpeed = self.y - y
-        mod = math.sqrt(xSpeed * xSpeed + ySpeed * ySpeed)
-        speedMod = 6
-        self.xSpeed = -6*xSpeed/mod
-        self.ySpeed = -6*ySpeed/mod

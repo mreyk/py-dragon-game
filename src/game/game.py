@@ -20,10 +20,9 @@ def main():
     screen = pygame.display.set_mode(screen_size)
 
     scene = SceneGame.SceneGame(screen, Debug)
-    scene.initialize()
     not_done = True
     while not_done:
-        not_done = scene.run()
+        scene = scene.run()
 
 if __name__ == "__main__":
     main()
