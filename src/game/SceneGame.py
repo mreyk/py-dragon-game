@@ -10,6 +10,7 @@ import EnemySkipper
 import Background
 import LifeDisplay
 import ScoreDisplay
+import SceneGameOver
 
 class SceneGame:
     def __init__(self, screen, Debug):
@@ -87,7 +88,7 @@ class SceneGame:
 
             self.dragon.update(self.screen, self.Debug)
             if self.dragon.lives <= 0:
-                newScene = SceneGame(self.screen, self.Debug)
+                newScene = SceneGameOver.SceneGameOver(self.screen, self.Debug)
                 return newScene
             for enemy in self.enemyList:
                 if enemy.dead:
