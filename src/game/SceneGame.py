@@ -88,7 +88,7 @@ class SceneGame:
 
             self.dragon.update(self.screen, self.Debug)
             if self.dragon.lives <= 0:
-                newScene = SceneGameOver.SceneGameOver(self.screen, self.Debug)
+                newScene = SceneGameOver.SceneGameOver(self.screen, self.Debug, self.guiScore.getScore())
                 return newScene
             for enemy in self.enemyList:
                 if enemy.dead:

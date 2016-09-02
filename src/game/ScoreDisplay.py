@@ -12,6 +12,9 @@ class ScoreDisplay:
     def addScore(self, score):
         self.score += score
 
+    def getScore(self):
+        return self.score
+
     def draw(self, screen):
         scoreText = self.font.render(str(self.score), False, (0,0,0))
         screen.blit(scoreText, (self.x, self.y))
