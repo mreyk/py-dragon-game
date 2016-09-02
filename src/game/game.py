@@ -2,7 +2,7 @@ import json
 
 import pygame
 
-import SceneGame
+import SceneGameStart
 
 def main():
     print "Starting game..."
@@ -19,7 +19,7 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode(screen_size)
 
-    scene = SceneGame.SceneGame(screen, Debug)
+    scene = SceneGameStart.SceneGameStart(screen, Debug)
     not_done = True
     while not_done:
         scene = scene.run()
