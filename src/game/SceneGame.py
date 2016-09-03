@@ -131,14 +131,15 @@ class SceneGame:
 def create_enemy(game, enemy_frame_rect, enemy_frames, dims):
     width = dims[0]
     height = dims[1]
-    if random.choice(('a','b')) == 'a':
+    enemyChoice = random.choice(('a','b'))
+    if enemyChoice == 'a':
         enemyHeight = 100
         ranges = range(enemyHeight, height + 1 - enemyHeight, height/5)
         yPos = random.choice(ranges)
         enemy_rect = pygame.Rect(width, yPos, enemyHeight, enemyHeight)
         enemyAnimDrawable = AnimDrawable.AnimDrawable('enemy', enemy_frame_rect.copy(), enemy_frames.copy())
         enemyPrototype = Enemy.Enemy(game, enemyAnimDrawable, enemy_rect)
-    else:
+    elif enemyChoice == 'b':
         enemyHeight = 100
         yPos = -100
         enemy_rect = pygame.Rect(width, yPos, enemyHeight, enemyHeight)
