@@ -50,7 +50,9 @@ class Dragon:
         if self.drawable.rect.top < 0:
             self.y = self.drawable.rect.height/2
         elif self.drawable.rect.bottom > screen.get_height():
-            self.y = screen.get_height() - self.drawable.rect.height/2
+            self.y = screen.get_height()/2 - self.drawable.rect.height/2
+            self.x = self.drawable.rect.width
+            self.hitDragon(1)
         #End screen boundaries logic
 
         self.drawable.rect.x = self.x - self.drawable.rect.width/2
@@ -58,6 +60,12 @@ class Dragon:
 
         if self.hitted_counter % 10 == 0:
             self.blinking = not self.blinking
+
+    def hitDragon(self, lives=1):
+        if self.state2 != 'HITTED':
+            self.state2 = 'HITTED'
+            self.hitted_counter = 100
+            self.lives -= lives
 
     def handleEvents(self, event):
         if event.type == pygame.KEYDOWN:
@@ -82,10 +90,7 @@ class Dragon:
             elif((event.key == pygame.K_d and self.xSpeed > 0) or
                  (event.key == pygame.K_a and self.xSpeed < 0)):
                 self.xSpeed = 0
-            
+
     def checkColl(self, enemy):
-        if (self.state2 != 'HITTED' and
-            self.drawable.checkMaskColl(enemy.drawable)):
-            self.state2 = 'HITTED'
-            self.hitted_counter = 100
-            self.lives -= 1
+        if (self.drawable.checkMaskColl(enemy.drawable)):
+            self.hitDragon(1)
