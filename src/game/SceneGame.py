@@ -70,16 +70,33 @@ class SceneGame:
         self.enemyList = []
         self.update = True
         self.draw = True
+        self.gamePaused = False
 
     def run(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT: sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    self.gamePaused = not self.gamePaused
+                    if(self.gamePaused):
+                        pygame.mixer.music.pause()
+                    else:
+                        pygame.mixer.music.unpause()
+
+                    return self
             self.dragon.handleEvents(event)
             if event.type == pygame.USEREVENT + 1:
                 self.draw = True
                 self.update = True
             if event.type == pygame.USEREVENT + 2:
                 self.enemyList.append(create_enemy(self, self.enemy_frame_rect, self.enemy_frames, (self.width, self.height)))
+
+        if self.gamePaused:
+            sfont = pygame.font.SysFont('Arial', 32)
+            pausetext = sfont.render('>PAUSED: Press \'p\' to continue<', True, (255, 255, 255))
+            self.screen.blit(pausetext, (self.width/2 - pausetext.get_width()/2, self.height/2))
+            pygame.display.flip()
+            return self
 
         if self.update:
             self.update = False
