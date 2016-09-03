@@ -1,14 +1,14 @@
 import pygame
 
 class Dragon:
-    def __init__(self, drawable):
+    def __init__(self, drawable, xyPos=(0,0)):
         self.drawable = drawable
         self.state = 'GLIDING'
         self.state2 = 'HAPPY'
         self.STATES = ('FLYING_UP','GLIDING','FLYING_DOWN')
-        self.x = self.drawable.rect.x
+        self.x = xyPos[0]
         self.xSpeed = 0
-        self.y = self.drawable.rect.y
+        self.y = xyPos[1]
         #Find other implementation for these variables
         self.glidingY = 0.5
         self.flyupY = -4

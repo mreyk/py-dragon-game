@@ -52,7 +52,7 @@ class SceneGame:
              'fire':({'frame': fire_001, 'time': 200},
                      {'frame':fire_001, 'time': 200})})
 
-        self.dragon = Dragon.Dragon(dragonAnimDrawable)
+        self.dragon = Dragon.Dragon(dragonAnimDrawable, (dragonAnimDrawable.rect.width, self.height/2-dragonAnimDrawable.rect.height/2))
 
         enemy_001 = pygame.image.load('images/enemy/enemy_001.png').convert_alpha()
         self.enemy_frame_rect = enemy_001.get_rect()
