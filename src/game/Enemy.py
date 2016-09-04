@@ -37,7 +37,12 @@ class Enemy:
         self.isDead(screen)
 
     def isDead(self, screen):
-        self.dead = False
+        if (self.drawable.rect.right < 0 or
+            self.drawable.rect.left > screen.get_width() or
+            self.drawable.rect.top > screen.get_height() or
+            self.drawable.rect.bottom < 0):
+            self.dead = True
+
 
     def onDragonCollission(self):
         self.state.onDragonCollission()
