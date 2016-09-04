@@ -37,12 +37,7 @@ class EnemySkipper(Enemy.Enemy):
         Enemy.Enemy.__init__(self, game, drawable, col_rect)
         self.state = EnemySkipper.StateHang(self, game)
         self.dead = False
-    
-    def update(self, screen, Debug=False):
-        self.state.updateState()
-        self.state.act()
 
-        self.move()
-
+    def isDead(self, screen):
         if (self.drawable.rect.right < 0 or self.drawable.rect.bottom > screen.get_height()):
             self.dead = True
