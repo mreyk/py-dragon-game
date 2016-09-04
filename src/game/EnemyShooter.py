@@ -1,8 +1,9 @@
-
 import pygame
 
 import Enemy
 import EnemyState
+import EnemyBullet
+import AnimDrawable
 
 class EnemyShooter(Enemy.Enemy):
 
@@ -47,8 +48,17 @@ class EnemyShooter(Enemy.Enemy):
 
     def shoot(self, game):
         dragon = game.getDragon()
-        """
-        bullet = EnemyBullet.EnemyBullet(game, ..., ...)
+        enemy_001 = pygame.image.load('images/enemy/enemy_001.png').convert_alpha()
+        enemy_frame_rect = enemy_001.get_rect()
+        enemy_frames = {
+            'enemy': ({'frame': enemy_001, 'time':100},
+                      {'frame': enemy_001, 'time':100})
+        }
+
+        enemyHeight = 20
+        enemy_rect = pygame.Rect(self.x, self.y, enemyHeight, enemyHeight)
+        enemyAnimDrawable = AnimDrawable.AnimDrawable('enemy', enemy_frame_rect.copy(), enemy_frames.copy())
+
+        bullet = EnemyBullet.EnemyBullet(game, enemyAnimDrawable , enemy_rect)
         bullet.aim(dragon)
         game.addEnemy(bullet)
-        """

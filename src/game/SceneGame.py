@@ -5,8 +5,9 @@ import pygame
 
 import AnimDrawable
 import Dragon
-import Enemy
+import EnemyWobbler
 import EnemySkipper
+import EnemyShooter
 import Background
 import LifeDisplay
 import ScoreDisplay
@@ -18,10 +19,18 @@ class SceneGame:
         self.width = screen.get_width()
         self.height = screen.get_height()
         self.Debug = Debug
+        self.enemyList = []
+        self.update = True
+        self.draw = True
+        self.gamePaused = False
+
         self.initialize()
 
     def getDragon(self):
         return self.dragon
+
+    def addEnemy(self, enemy):
+        self.enemyList.append(enemy)
 
     def initialize(self):
         #Move 'background logic' to a class of its own
@@ -67,10 +76,6 @@ class SceneGame:
         pygame.time.set_timer(pygame.USEREVENT + 2, 2000) # Event to create enemies every 2 seconds or so
         update = True
         draw = True
-        self.enemyList = []
-        self.update = True
-        self.draw = True
-        self.gamePaused = False
 
     def run(self):
         for event in pygame.event.get():
@@ -89,7 +94,7 @@ class SceneGame:
                 self.draw = True
                 self.update = True
             if event.type == pygame.USEREVENT + 2:
-                self.enemyList.append(create_enemy(self, self.enemy_frame_rect, self.enemy_frames, (self.width, self.height)))
+                self.enemyList.append(create_random_enemy(self, self.enemy_frame_rect, self.enemy_frames, (self.width, self.height)))
 
         if self.gamePaused:
             sfont = pygame.font.SysFont('Arial', 32)
@@ -128,23 +133,29 @@ class SceneGame:
 
         return self
 
-def create_enemy(game, enemy_frame_rect, enemy_frames, dims):
+def create_random_enemy(game, enemy_frame_rect, enemy_frames, dims):
     width = dims[0]
     height = dims[1]
-    enemyChoice = random.choice(('a','b'))
+    enemyChoice = random.choice(('a','b','c'))
     if enemyChoice == 'a':
         enemyHeight = 100
         ranges = range(enemyHeight, height + 1 - enemyHeight, height/5)
         yPos = random.choice(ranges)
         enemy_rect = pygame.Rect(width, yPos, enemyHeight, enemyHeight)
         enemyAnimDrawable = AnimDrawable.AnimDrawable('enemy', enemy_frame_rect.copy(), enemy_frames.copy())
-        enemyPrototype = Enemy.Enemy(game, enemyAnimDrawable, enemy_rect)
+        enemyPrototype = EnemyWobbler.EnemyWobbler(game, enemyAnimDrawable, enemy_rect)
     elif enemyChoice == 'b':
         enemyHeight = 100
         yPos = -100
         enemy_rect = pygame.Rect(width, yPos, enemyHeight, enemyHeight)
         enemyAnimDrawable = AnimDrawable.AnimDrawable('enemy', enemy_frame_rect.copy(), enemy_frames.copy())
         enemyPrototype = EnemySkipper.EnemySkipper(game, enemyAnimDrawable, enemy_rect)
+    elif enemyChoice == 'c':
+        enemyHeight = 100
+        yPos = height - 200
+        enemy_rect = pygame.Rect(width, yPos, enemyHeight, enemyHeight)
+        enemyAnimDrawable = AnimDrawable.AnimDrawable('enemy', enemy_frame_rect.copy(), enemy_frames.copy())
+        enemyPrototype = EnemyShooter.EnemyShooter(game, enemyAnimDrawable, enemy_rect)
 
     pygame.time.set_timer(pygame.USEREVENT + 2, int(2000*random.random() + 1000)) # Event to create enemies every 2 seconds or so
 
