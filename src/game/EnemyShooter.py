@@ -11,7 +11,7 @@ class EnemyShooter(Enemy.Enemy):
         def __init__(self, owner, game):
             EnemyState.EnemyState.__init__(self, owner, game)
             self.timer = 0
-            self.owner.xSpeed = -2
+            self.owner.xSpeed = -3
 
         def getName(self):
             return 'Move'
@@ -48,7 +48,7 @@ class EnemyShooter(Enemy.Enemy):
 
     def shoot(self, game):
         dragon = game.getDragon()
-        enemy_001 = pygame.image.load('images/enemy/enemy_001.png').convert_alpha()
+        enemy_001 = pygame.image.load('images/enemy_shooter/bullet.png').convert_alpha()
         enemy_frame_rect = enemy_001.get_rect()
         enemy_frames = {
             'enemy': ({'frame': enemy_001, 'time':100},
