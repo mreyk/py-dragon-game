@@ -71,11 +71,11 @@ class Dragon:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
                 self.state = 'FLYING_UP'
-                self.drawable.nextAnim('fly_up')
+                self.drawable.nextAnim('flyup')
                 self.drawable.restartAnim()
             elif event.key == pygame.K_s:
                 self.state = 'FLYING_DOWN'
-                self.drawable.nextAnim('fly_down')
+                self.drawable.nextAnim('flydown')
                 self.drawable.restartAnim()
             elif event.key == pygame.K_d:
                 self.xSpeed = self.xMAXSPEED
