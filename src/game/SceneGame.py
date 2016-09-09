@@ -1,5 +1,6 @@
 import sys
 import random
+import os
 
 import pygame
 
@@ -45,21 +46,23 @@ class SceneGame:
         self.guiLives = LifeDisplay.LifeDisplay(lifeImage)
         self.guiScore = ScoreDisplay.ScoreDisplay(False, self.width-300, 10)
 
-        # Come up with a more automated system for loading images and animations
-        flyup_001 = pygame.image.load('images/dragon/flyup_001.png').convert_alpha()
-        flyup_002 = pygame.image.load('images/dragon/flyup_002.png').convert_alpha()
-        flydown_001 = pygame.image.load('images/dragon/flydown_001.png').convert_alpha()
-        fire_001 = pygame.image.load('images/dragon/fire_001.png').convert_alpha()
+        # This is more automated endeed, but there is an issue with setting a correct 'time' for each frame. Either the time is constant and the animator keeps extra frames, or we save the time somewhere, like in the image name or in a config file. Anyways, this solution is not really better than the other :(
+        # On the other hand, the time is usually constant in animation (?maybe?)
+        dragonAnims = {}
+        top = 'images/dragon'
+        for root, dirs, files in os.walk(top, topdown=False):
+            for name in sorted(files):
+                splitName = name.split('_')
+                anim = splitName[0]
+                num = splitName[1]
+                frame = pygame.image.load(os.path.join(root, (name))).convert_alpha()
+                if anim not in dragonAnims:
+                    dragonAnims[anim] = []
+                frame = {'frame': frame , 'time': 20}
+                dragonAnims[anim].append(frame)
+
         dragonAnimDrawable = AnimDrawable.AnimDrawable(
-            'glide', flyup_001.get_rect(),
-            {'glide': ({'frame': flyup_001, 'time':10},
-                       {'frame': flyup_001, 'time':10}),
-             'fly_up':({'frame': flyup_002, 'time': 20},
-                       {'frame': flyup_001, 'time': 20}),
-             'fly_down':({'frame': flydown_001, 'time': 20},
-                         {'frame': flydown_001, 'time': 20}),
-             'fire':({'frame': fire_001, 'time': 200},
-                     {'frame':fire_001, 'time': 200})})
+            'glide', dragonAnims['flyup'][0]['frame'].get_rect(), dragonAnims)
 
         self.dragon = Dragon.Dragon(dragonAnimDrawable, (dragonAnimDrawable.rect.width, self.height/2-dragonAnimDrawable.rect.height/2))
 
