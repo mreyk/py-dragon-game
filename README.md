@@ -7,6 +7,7 @@ It seems I couldn't put myself together to start a project on python so far, so 
 
 **DISCLAIMER:** This code is being written by monkeys. :monkey:
 
+![Screenshot](https://raw.githubusercontent.com/mreyk/py-dragon-game/puig/images/screenshot.png "Screenshot")
 
 ## Installation
 
@@ -33,4 +34,9 @@ git checkout puig
 python src/game/game.py
 ```
 
-![Screenshot](https://raw.githubusercontent.com/mreyk/py-dragon-game/puig/images/screenshot.png "Screenshot")
+Keys:
+
+* Up: W
+* Down: S
+* Left: A
+* Right: D
