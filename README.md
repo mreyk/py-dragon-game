@@ -32,3 +32,5 @@ git checkout puig
 ```
 python src/game/game.py
 ```
+
+![Screenshot](https://raw.githubusercontent.com/mreyk/py-dragon-game/puig/images/screenshot.png "Screenshot")
